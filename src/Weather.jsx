@@ -24,6 +24,15 @@ function WeatherApp() {
     }
   }
 
+function handleEnter(e){
+setCityName(e.target.value)
+    if(e.key === "Enter"){
+      getWeather()
+
+    }
+
+  }
+
   function getWeatherEmoji(main) {
     switch (main) {
       case "Clear": return "☀️";
@@ -47,7 +56,14 @@ function WeatherApp() {
         <input
           type="text"
           value={cityName}
-          onChange={(e) => setCityName(e.target.value)}
+         onChange={(e) => setCityName(e.target.value)}
+          onKeyDown={(e)=>{
+          if(e.key === "Enter"){
+            getWeather()
+          }
+        }}
+
+        
           placeholder="Enter a city"
           className="flex-1 px-5 py-3 border-none outline-none rounded-l-full sm:rounded-l-full sz bg-white/20 text-white placeholder-white/80 text-[16px] backdrop-blur-sm w-full"
         />
