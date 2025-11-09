@@ -8,5 +8,5 @@ export default defineConfig({
       tailwindcss(),
        
   ],
-  base: "/library",
+  base: "/weather-app",
 })
