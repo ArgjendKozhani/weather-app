@@ -12,10 +12,28 @@ function WeatherApp() {
   const [error, setError] = useState(null);
 
   async function getWeather() {
+
+if(cityName.trim() === ""){
+  setError("Please enter a city name");
+  setData(null)
+
+  return;
+}
+
     try {
       const url = `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${APIKEY}`;
       const response = await fetch(url);
       const weatherData = await response.json();
+
+      if(weatherData.cod !== 200){
+        setError("City not found ! Please enter a valid city")
+        setData(null);
+        return
+      }
+
+      
+
+
       setData(weatherData);
       console.log(weatherData);
     } catch (err) {
@@ -24,14 +42,7 @@ function WeatherApp() {
     }
   }
 
-function handleEnter(e){
-setCityName(e.target.value)
-    if(e.key === "Enter"){
-      getWeather()
 
-    }
-
-  }
 
   function getWeatherEmoji(main) {
     switch (main) {
@@ -57,16 +68,19 @@ setCityName(e.target.value)
           type="text"
           value={cityName}
          onChange={(e) => setCityName(e.target.value)}
+        
           onKeyDown={(e)=>{
           if(e.key === "Enter"){
             getWeather()
           }
+           if (error) setError("");
         }}
 
         
           placeholder="Enter a city"
           className="flex-1 px-5 py-3 border-none outline-none rounded-l-full sm:rounded-l-full sz bg-white/20 text-white placeholder-white/80 text-[16px] backdrop-blur-sm w-full"
         />
+        
         <button
           onClick={getWeather}
           className="px-5 py-3 border-none rounded-tr-[50px] rounded-br-[50px] sm:rounded-tr-[50px] sm:rounded-br-[50px] bg-white/50 hover:bg-white/60 text-white font-bold text-[16px] 
@@ -74,8 +88,16 @@ setCityName(e.target.value)
         >
           Get Weather
         </button>
-      </div>
 
+       
+      </div>
+ { error ? (
+          <p className="text-blue-600 text-[15px] text-10xl bold ">{error}</p>
+        ) : (
+          ""
+        )
+
+        }
 
       {data && data.weather && (
         <>
